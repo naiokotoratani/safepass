@@ -1,0 +1,4 @@
+
+# Dados locais da API temporária
+backend/data/*.json
+!backend/data/.gitkeep
