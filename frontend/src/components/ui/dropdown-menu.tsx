@@ -1,40 +1,40 @@
 "use client";
 
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import type { ComponentProps } from "react";
+import * as MenuPrimitive from "@radix-ui/react-dropdown-menu";
+import type { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-export const DropdownMenu = DropdownMenuPrimitive.Root;
-export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
+export const DropdownMenu = MenuPrimitive.Root;
+export const DropdownMenuTrigger = MenuPrimitive.Trigger;
 
 export function DropdownMenuContent({
   className,
-  sideOffset = 10,
   ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: ComponentPropsWithoutRef<typeof MenuPrimitive.Content>) {
   return (
-    <DropdownMenuPrimitive.Portal>
-      <DropdownMenuPrimitive.Content
-        sideOffset={sideOffset}
+    <MenuPrimitive.Portal>
+      <MenuPrimitive.Content
+        align="end"
+        sideOffset={8}
         className={cn(
-          "z-50 w-52 overflow-hidden rounded-2xl border bg-popover p-1.5 shadow-menu data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+          "z-50 min-w-52 rounded-xl border border-brand-blue-soft bg-white p-1.5 shadow-lg",
           className,
         )}
         {...props}
       />
-    </DropdownMenuPrimitive.Portal>
+    </MenuPrimitive.Portal>
   );
 }
 
 export function DropdownMenuItem({
   className,
   ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Item>) {
+}: ComponentPropsWithoutRef<typeof MenuPrimitive.Item>) {
   return (
-    <DropdownMenuPrimitive.Item
+    <MenuPrimitive.Item
       className={cn(
-        "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-base font-normal text-muted-foreground outline-none data-[highlighted]:bg-muted data-[highlighted]:text-primary [&_svg]:size-4",
+        "flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink outline-none data-[highlighted]:bg-brand-blue-soft/60",
         className,
       )}
       {...props}
@@ -42,9 +42,6 @@ export function DropdownMenuItem({
   );
 }
 
-export function DropdownMenuSeparator({
-  className,
-  ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
-  return <DropdownMenuPrimitive.Separator className={cn("my-1 border-t", className)} {...props} />;
+export function DropdownMenuSeparator() {
+  return <MenuPrimitive.Separator className="my-1 h-px bg-brand-blue-soft" />;
 }

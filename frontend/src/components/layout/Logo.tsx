@@ -1,19 +1,26 @@
-import { ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export function Logo({ href }: { href: string }) {
+interface LogoProps {
+  tone?: "default" | "light";
+  className?: string;
+}
+
+/** Logotipo oficial fornecido no manual de marca do SAFEpass. */
+export function Logo({ tone = "default", className }: LogoProps) {
+  const src = tone === "light" ? "/brand/safepass-logo-footer.png" : "/brand/safepass-logo.png";
+
   return (
-    <Link
-      href={href}
-      className="flex items-center gap-2.5 rounded-xl"
-      aria-label="SAFEpass, início"
-    >
-      <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground shadow-button">
-        <ShieldCheck className="size-5 stroke-[2.2]" aria-hidden="true" />
-      </span>
-      <span className="font-display text-[21px] font-extrabold tracking-[-.07em] text-primary">
-        SAFE<span className="font-semibold">pass</span>
-      </span>
+    <Link href="/" aria-label="SAFEpass — página inicial" className={cn("inline-flex shrink-0 items-center", className)}>
+      <Image
+        src={src}
+        alt="SAFEpass"
+        width={184}
+        height={47}
+        priority
+        className="h-8 w-auto object-contain sm:h-10"
+      />
     </Link>
   );
 }

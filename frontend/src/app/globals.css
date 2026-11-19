@@ -1,103 +1,37 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import url("https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@400;500;600;700&family=Yanone+Kaffeesatz:wght@300;400;500;600;700&display=swap");
 
-/* Identidade visual SAFEpass. Componentes usam estes tokens (bg-primary, text-success...),
-   nunca hex soltos. */
-@theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary-strong: var(--primary-strong);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-subtle: var(--subtle);
-  --color-success: var(--success);
-  --color-success-soft: var(--success-soft);
-  --color-warning: var(--warning);
-  --color-warning-soft: var(--warning-soft);
-  --color-destructive: var(--destructive);
-  --color-destructive-soft: var(--destructive-soft);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  --shadow-card: 0 12px 32px rgb(63 104 134 / 0.045);
-  --shadow-button: 0 8px 18px rgb(63 104 134 / 0.16);
-  --shadow-hero: 0 18px 40px rgb(63 104 134 / 0.2);
-  --shadow-menu: 0 16px 32px rgb(63 104 134 / 0.16);
-  --shadow-bar: 0 4px 18px rgb(63 104 134 / 0.05);
-
-  --animate-enter: enter 0.35s cubic-bezier(0.23, 1, 0.32, 1) both;
-  @keyframes enter {
-    from {
-      opacity: 0;
-      transform: translateY(7px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --radius: 0.85rem;
-  --background: #f4f7f5;
-  --foreground: #3f6886;
-  --card: #ffffff;
-  --card-foreground: #3f6886;
-  --popover: #ffffff;
-  --popover-foreground: #3f6886;
-  --primary: #3f6886;
-  --primary-foreground: #ffffff;
-  --primary-strong: #2f526d;
-  --accent: #d6e8f6;
-  --accent-foreground: #3f6886;
-  --muted: #f1f6fa;
-  --muted-foreground: #718493;
-  --subtle: #9aabb7;
-  --success: #2f9e5c;
-  --success-soft: #d1f0e3;
-  --warning: #f59f0c;
-  --warning-soft: #fff5b2;
-  --destructive: #e92423;
-  --destructive-soft: #eb9180;
-  --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #3f6886;
+  --font-inter: "Inter", "Segoe UI", Arial, sans-serif;
+  --font-yanone: "Yanone Kaffeesatz", "Trebuchet MS", Arial, sans-serif;
+  --font-days: "Days One", "Days", "Arial Black", sans-serif;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-inter); }
+  :focus-visible {
+    outline: 2px solid theme("colors.brand.blue");
+    outline-offset: 2px;
   }
-  html,
-  body {
-    min-width: 320px;
+  ::selection { background: theme("colors.brand.blue-soft"); color: theme("colors.ink"); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
-  body {
-    @apply bg-background font-sans text-foreground antialiased;
-    text-rendering: optimizeLegibility;
+}
+
+@layer components {
+  .admin-input {
+    @apply min-h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-ink;
+    @apply focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue/20;
   }
-  button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]) {
-    cursor: pointer;
-  }
+  .section-heading { @apply mb-5 text-center font-display text-3xl font-bold text-brand-blue sm:text-4xl; }
 }
