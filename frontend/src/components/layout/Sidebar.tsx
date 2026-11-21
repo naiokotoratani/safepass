@@ -1,8 +1,8 @@
+
 "use client";
 
-import { HelpCircle, X } from "lucide-react";
+import { X } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -26,17 +26,28 @@ export function Sidebar({ area, pathname, open, onClose }: SidebarProps) {
       )}
     >
       <div className="flex justify-end px-2 lg:hidden">
-        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fechar menu">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          aria-label="Fechar menu"
+        >
           <X aria-hidden="true" />
         </Button>
       </div>
+
       <p className="mt-7 px-2 text-[10px] font-extrabold tracking-[.13em] text-subtle uppercase">
         {area.label}
       </p>
-      <nav className="mt-3 space-y-1" aria-label={`Navegação da ${area.label.toLowerCase()}`}>
+
+      <nav
+        className="mt-3 space-y-1"
+        aria-label={`Navegação da ${area.label.toLowerCase()}`}
+      >
         {area.items.map((item) => {
           const Icon = item.icon;
           const active = isActive(item, area, pathname);
+
           return (
             <Link
               key={item.href}
@@ -53,16 +64,22 @@ export function Sidebar({ area, pathname, open, onClose }: SidebarProps) {
               <Icon
                 className={cn(
                   "size-[18px]",
-                  active ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                  active
+                    ? "text-primary"
+                    : "text-muted-foreground group-hover:text-primary",
                 )}
                 aria-hidden="true"
               />
+
               <span className="flex-1">{item.label}</span>
+
               {item.badge && (
                 <span
                   className={cn(
                     "grid h-5 min-w-5 place-items-center rounded-full px-1 text-[10px] font-extrabold",
-                    active ? "bg-card text-primary" : "bg-muted text-muted-foreground",
+                    active
+                      ? "bg-card text-primary"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   {item.badge}
@@ -72,16 +89,6 @@ export function Sidebar({ area, pathname, open, onClose }: SidebarProps) {
           );
         })}
       </nav>
-      <div className="mt-auto pt-6">
-        <button
-          type="button"
-          onClick={() => toast("A Central de ajuda está disponível para orientar você.")}
-          className="flex w-full items-center gap-3 rounded-2xl border bg-muted/60 px-3 py-3 text-left text-sm font-bold text-muted-foreground transition hover:bg-muted hover:text-primary"
-        >
-          <HelpCircle className="size-[18px] text-primary" aria-hidden="true" />
-          Central de ajuda
-        </button>
-      </div>
     </aside>
   );
 }
