@@ -16,7 +16,7 @@ type ApiResult = {
   error?: string;
   message?: string;
   user?: {
-    role: "empresa" | "prestador";
+    role: "admin" | "usuario" | "empresa" | "prestador";
   };
 };
 
@@ -41,6 +41,16 @@ async function postAuth(
   }
 
   return data;
+}
+
+function getDashboardPath(role?: "admin" | "usuario" | "empresa" | "prestador") {
+  switch (role) {
+    case "admin": return "/admin";
+    case "usuario": return "/usuario";
+    case "empresa": return "/empresa";
+    case "prestador": return "/prestador";
+    default: return "/login";
+  }
 }
 
 // Estrutura compartilhada das telas de autenticação
@@ -112,7 +122,7 @@ export function LoginForm() {
       });
 
       router.replace(
-        data.user?.role === "empresa" ? "/empresa" : "/prestador"
+        getDashboardPath(data.user?.role)
       );
 
       router.refresh();
@@ -209,7 +219,7 @@ export function LoginForm() {
 export function RegisterForm() {
   const router = useRouter();
 
-  const [type, setType] = useState("Empresa");
+  const [type, setType] = useState("Usuário");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -232,7 +242,8 @@ export function RegisterForm() {
 
     try {
       const data = await postAuth("/api/auth/register", {
-        role: type === "Empresa" ? "empresa" : "prestador",
+        role: type === "Empresa" ? "empresa" : type === "Prestador" ? "prestador" : type === "Administrador" ? "admin" : "usuario",
+        adminCode: form.get("adminCode"),
         name: form.get("name"),
         document: form.get("document"),
         specialty: form.get("specialty"),
@@ -271,15 +282,15 @@ export function RegisterForm() {
             value={type}
             onChange={(e) => setType(e.target.value)}
           >
+            <option>Usuário</option>
+            <option>Prestador</option>
             <option>Empresa</option>
-            <option>Prestador de serviços</option>
+            <option>Administrador</option>
           </select>
         </label>
 
         <label className="block text-sm font-semibold">
-          {type === "Empresa"
-            ? "Nome da empresa"
-            : "Nome completo ou razão social"}
+          {type === "Empresa" ? "Nome da empresa" : "Nome completo"}
 
           <input
             name="name"
@@ -292,7 +303,7 @@ export function RegisterForm() {
         </label>
 
         <label className="block text-sm font-semibold">
-          {type === "Empresa" ? "CNPJ" : "CPF ou CNPJ"}
+          {type === "Empresa" ? "CNPJ" : "CPF"}
 
           <input
             name="document"
@@ -302,7 +313,7 @@ export function RegisterForm() {
           />
         </label>
 
-        {type !== "Empresa" && (
+        {type === "Prestador" && (
           <label className="block text-sm font-semibold">
             Especialidade / categoria
 
@@ -312,6 +323,23 @@ export function RegisterForm() {
               required
               placeholder="Ex.: Psicologia"
             />
+          </label>
+        )}
+
+        {type === "Administrador" && (
+          <label className="block text-sm font-semibold">
+            Código de autorização administrativa
+            <input
+              name="adminCode"
+              className={field}
+              type="password"
+              required
+              placeholder="Código fornecido pela equipe SAFEpass"
+              autoComplete="off"
+            />
+            <span className="mt-1 block text-xs font-normal text-muted-foreground">
+              O cadastro administrativo só é liberado com um código autorizado.
+            </span>
           </label>
         )}
 
