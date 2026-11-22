@@ -35,7 +35,8 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         }
 
         // Notificações são compartilhadas; as demais áreas são restritas ao perfil.
-        if (pathname !== "/notificacoes" && !pathname.startsWith(destination)) {
+        const isInOwnArea = pathname === destination || pathname.startsWith(destination + "/");
+        if (pathname !== "/notificacoes" && !isInOwnArea) {
           router.replace(destination);
           return;
         }
