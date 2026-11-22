@@ -48,7 +48,13 @@ export async function getSessionUser(token?: string | null): Promise<AuthUser | 
   } catch { return null; }
 }
 function publicUser(user: StoredUser): AuthUser { return { id: user.id, name: user.name, email: user.email, role: user.role }; }
-export async function registerUser(input: { name: string; email: string; password: string; role: UserRole; document: string; phone: string; specialty?: string }) {
+export async function registerUser(input: { name: string; email: string; password: string; role: UserRole; document: string; phone: string; specialty?: string; adminCode?: string }) {
+  if (input.role === "admin") {
+    const expectedCode = process.env.SAFEPASS_ADMIN_REGISTRATION_CODE;
+    if (!expectedCode || !input.adminCode || input.adminCode !== expectedCode) {
+      throw new Error("Código de autorização administrativa inválido ou não configurado.");
+    }
+  }
   const users = await readUsers();
   const email = input.email.trim().toLowerCase();
   if (users.some((user) => user.email === email)) throw new Error("Este e-mail já está cadastrado.");
