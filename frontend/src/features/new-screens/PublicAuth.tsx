@@ -255,7 +255,7 @@ export function RegisterForm() {
       setMessage("Cadastro realizado! Redirecionando...");
 
       router.replace(
-        data.user?.role === "empresa" ? "/empresa" : "/prestador"
+        getDashboardPath(data.user?.role)
       );
 
       router.refresh();
